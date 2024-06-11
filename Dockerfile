@@ -2,7 +2,7 @@
 # Dockerfile to build borgbackup server images
 # Based on Debian
 ############################################################
-ARG BASE_IMAGE=debian:bullseye-slim
+ARG BASE_IMAGE=debian:bookworm-slim
 FROM $BASE_IMAGE
 
 # Volume for SSH-Keys
@@ -13,8 +13,11 @@ VOLUME /backup
 
 ENV DEBIAN_FRONTEND noninteractive
 
+# Add the bookworm-backports to the sources list
+RUN echo "deb http://deb.debian.org/debian bookworm-backports main" >> /etc/apt/sources.list
+
 RUN apt-get update && apt-get -y --no-install-recommends install \
-		borgbackup openssh-server && apt-get clean && \
+		-t bookworm-backports borgbackup openssh-server && apt-get clean && \
 		useradd -s /bin/bash -m -U borg && \
 		mkdir /home/borg/.ssh && \
 		chmod 700 /home/borg/.ssh && \
