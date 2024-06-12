@@ -1,4 +1,11 @@
 # BorgServer - Docker image
+
+## Fork from [Nold360/docker-borgserver](https://github.com/Nold360/docker-borgserver)
+- Updated Borg from 1.2.0 to 1.2.8
+- New Feature: Folders for users/clients
+	-  This new feature allows users/clients to be separated by creating their own folders in `/backup` based on the directory structure in `/sshkeys/clients`.
+---
+
 Debian based container image, running openssh-daemon only accessable by user named "borg" using SSH-Publickey Auth & "borgbackup" as client. Backup-Repositoriees, client's SSH-Keys & SSHd's Hostkeys will be stored in persistent storage.
 For every ssh-key added, a own borg-repository will be created.
 
@@ -29,7 +36,7 @@ docker run -td \
 	-p 2222:22  \
 	--volume ./borg/sshkeys:/sshkeys \
 	--volume ./borg/backup:/backup \
-	nold360/borgserver:latest
+	steinhose/borgserver:latest
 ```
 
 
@@ -45,7 +52,7 @@ See the the documentation for all available arguments: [borgbackup.readthedocs.i
 
 ##### Example
 ```
-docker run --rm -e BORG_SERVE_ARGS="--progress --debug" (...) nold360/borgserver
+docker run --rm -e BORG_SERVE_ARGS="--progress --debug" (...) steinhose/borgserver
 ```
 
 #### BORG_APPEND_ONLY
@@ -62,7 +69,7 @@ To declare a client as admin, set this variable to the name of the client/sshkey
 
 ##### Example
 ```
-docker run --rm -e BORG_APPEND_ONLY="yes" -e BORG_ADMIN="nolds_notebook" (...) nold360/borgserver
+docker run --rm -e BORG_APPEND_ONLY="yes" -e BORG_ADMIN="nolds_notebook" (...) steinhose/borgserver
 ```
 
 To prune repos from another client, you have to add the path to the repository in the clients directory:
@@ -133,9 +140,5 @@ And create your first backup!
  $ borg create backup:my_first_borg_repo::documents-2017-11-01 /home/user/MyImportentDocs
 ```
 
-## Tags
-
-All images are freshly built every week & published as `nold360/borgserver` with the following tags:
- - Next / Unstable [borg 1.2.0]: `bookworm`, `1.2.0`
- - Latest / Stable [borg 1.1.16]: `bullseye`, `1.1.16`, `latest`
- - Legacy / Buster [borg 1.1.9 ]: `buster`, `1.1.9`
+## Image
+- [steinhose/borgserver:1.2.8](https://hub.docker.com/repository/docker/steinhose/borgserver)
